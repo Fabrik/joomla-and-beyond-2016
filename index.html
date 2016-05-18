@@ -1,0 +1,452 @@
+<html>
+<head>
+	<link rel="stylesheet" href="css/reveal.css">
+	<link rel="stylesheet" href="css/theme/sky.css">
+	<link rel="stylesheet" href="css/custom.css">
+	<link rel="stylesheet" href="lib/css/zenburn.css">
+	<link href='https://fonts.googleapis.com/css?family=Indie+Flower|Chelsea+Market' rel='stylesheet' type='text/css'>
+</head>
+<body>
+<div class="reveal">
+	<div class="slides">
+		<section data-markdown>
+			## Javascript!
+			![](images/whycantwealljustgetalong.jpg)
+
+			-Rob Clayburn
+		</section>
+		<section>
+			<h2>About me</h2>
+
+			<img src="images/rob.jpg#thirty" class="fragment" data-fragment-index="4">
+			<ul style="float:right;width:50%" >
+				<li class="fragment" data-fragment-index="1">Rob Clayburn</li>
+				<li class="fragment" data-fragment-index="2">Creator of Fabrik</li>
+				<li class="fragment" data-fragment-index="3">Part of the JED development team</li>
+				<li class="fragment" data-fragment-index="4">Partial to dressing up as a daffodil</li>
+			</ul>
+		</section>
+		<section data-markdown>
+			## So what should I expect in this talk anyway?
+			- A brief look at JavaScript's history
+			- Joomla and JavaScript
+			- What might be missing?
+			- Whisper, a potential solution
+		</section>
+		<section data-markdown>
+			<script type="text/template">
+				### A brief history of JavaScript
+
+				* 1995 First release from Netscape
+				* 1997 DHTML with Internet Explorer 4
+				* 2004 Gmail deployed using Ajax
+				* 2005 Joomla released
+				* 2006 jQuery & XMLHttpRequest object W3C draft spec released
+				* 2008 Joomla 1.5
+				* 2009 JavaScript ES5
+				* 2010 Angular.js
+				* *20012 Joomla 2.5 & Joomla 3*
+				* 2013 React.js
+				* 2014 Flux
+				* 2015 Redux & JavaScript ES6
+			</script>
+		</section>
+		<section data-markdown>
+			<script type="text/template">
+				## Joomla and JavaScript
+
+				* Joomla 1.x the wild west of JavaScript<!-- .element: class="fragment" data-fragment-index="2" -->
+				* Joomla 1.5 => 2.5 and Mootools<!-- .element: class="fragment" data-fragment-index="3" -->
+				* Joomla 3+ and jQuery / Bootstrap2<!-- .element: class="fragment" data-fragment-index="4" -->
+				* Joomla 4+ and jQuery / Bootstrap4?<!-- .element: class="fragment" data-fragment-index="5" -->
+			</script>
+		</section>
+		<section data-markdown>
+			![alt text](images/the-only-constant is change.jpg)
+		</section>
+		<section data-markdown>
+			<script type="text/template">
+				### So what does a JavaScript heavy project look like anyway?
+
+				* Fabrik<!-- .element: class="fragment" data-fragment-index="1" -->
+				* 26.5% JavaScript<!-- .element: class="fragment" data-fragment-index="2" -->
+				* 612 files<!-- .element: class="fragment" data-fragment-index="3" -->
+				* 372 000 lines of code<!-- .element: class="fragment" data-fragment-index="4" -->
+			</script>
+		</section>
+
+		<section data-markdown data-background="#ff0000" data-background-transition="fade">
+			<script type="text/template">
+				![alt text](images/my-brain-hurts.jpg)
+			</script>
+		</section>
+		<section data-markdown>
+			<script type="text/template">
+				## Potential issues...
+
+				* Multiple versions of libraries loaded (jQuery, requireJs)
+				* jQuery not in no-conflict-mode
+				* AJAX calls can potentially load a new version of jQuery
+				* Templates do their own thing UIKit, Bootstrap3, Bootstrap4 etc
+				* Rewriting code to keep up with latest libraries, or load multiple libraries
+			</script>
+		</section>
+		<section data-markdown data-background-transition="convex">
+			<script type="text/template">
+				### So how do I feel as a Joomla & JavaScript developer?
+				![alt text](images/run-away.jpg) <!-- .element: class="fragment" data-fragment-index="1" -->
+			</script>
+		</section>
+		<section data-markdown data-background="#7E904C" >
+			<script type="text/template">
+				![](images/now-for-something-completely-different.png)
+			</script>
+		</section>
+		<section data-markdown>
+			<script type="text/template">
+			## What might we be missing?
+
+			* Dependency management<!-- .element: class="fragment" data-fragment-index="1" -->
+			* Declarative "data first" approach<!-- .element: class="fragment" data-fragment-index="2" -->
+			* Cross component/module communication<!-- .element: class="fragment" data-fragment-index="3" -->
+			* View layers separated from the data layer<!-- .element: class="fragment" data-fragment-index="4" -->
+			</script>
+    		</section>
+		<section data-markdown>
+			<script type="text/template">
+				## Dependency management
+				- **AMD**
+				  - Asynchronous Module Definition
+				- **CommonJS**
+				- **ES6 Modules**
+				  - requires ES6 => ES5 compilation
+			</script>
+		</section>
+		<section>
+				<h2>Data first approach - Immutable</h2>
+				<blockquote class="fragment" data-fragment-index="1" >The last thing you wanted any programmer to do is
+					<strong>mess with internal state</strong> even if presented figuratively
+				<cite>Alan Kay - creator of Smalltalk</cite></blockquote>
+		</section>
+		<section>
+			<h3>Mutable objects</h3>
+			<pre><code data-trim data-noescape class="js">
+var map1 = {a:1, b:2, c:3};
+var map2 = map1;
+map2.b = 2;
+assert(map1.equals(map2) === true);
+var map3 = map1;
+map3.b = 50;
+assert(map1.equals(map3) === true);
+</code></pre>
+			<div class="fragment" data-fragment-index="1">
+			<h3>Immutable objects</h3>
+				<pre><code data-trim data-noescape>
+var map1 = Immutable.Map({a:1, b:2, c:3});
+var map2 = map1.set('b', 2);
+assert(map1.equals(map2) === true);
+var map3 = map1.set('b', 50);
+assert(map1.equals(map3) === false);
+</code></pre>
+</div>
+		</section>
+
+		<section>
+			<h3>Data first approach - Redux</h3>
+				<img src="images/redux.jpg#half" />
+				<ul style="display: inline;
+    width: 43%;
+    float: right;">
+					<li class="fragment" data-fragment-index="1">The user triggers actions</li>
+					<li class="fragment" data-fragment-index="2">Optional middle ware is run, e.g. logging</li>
+					<li class="fragment" data-fragment-index="3">A series of reducers return new instances of the stores state</li>
+					<li class="fragment" data-fragment-index="4">Reducers are pure functions</li>
+					<li class="fragment" data-fragment-index="5">View provider rendered on state change</li>
+				</ul>
+
+
+		</section>
+
+		<section data-markdown>
+			<script type="text/template">
+			## Whisper
+
+			https://github.com/Fabrik/whisper
+
+			- Small system plugin 14kb Js
+			- Implements Redux, exposing 4 methods
+			  - addReducer()<!-- .element: class="fragment" data-fragment-index="1" -->
+			  - dispatch()<!-- .element: class="fragment" data-fragment-index="2" -->
+			  - getState()<!-- .element: class="fragment" data-fragment-index="3" -->
+			  - subscribe()<!-- .element: class="fragment" data-fragment-index="4" -->
+			- Available to any components/module via<!-- .element: class="fragment" data-fragment-index="5" -->
+			 - Joomla.whisper.trigger('whisper.method', args)<!-- .element: class="fragment" data-fragment-index="5" -->
+			</script>
+		</section>
+
+		<section data-markdown>
+			## Cross component communication
+			![](images/j&b2016-mockup.png)
+		</section>
+
+		<section>
+			<h3>Dispatch an Action</h3>
+			<pre><code>
+
+	addButton
+            .addEventListener('click', function () {
+                // Our action we want to dispatch
+                var action = {
+                    type: 'COM_TODO.ADD',
+                    text: input.value
+                }
+		$w.trigger('whisper.dispatch', {action: action})
+            });</code></pre>
+		</section>
+
+		<section>
+			<h3>Reducer run</h3>
+			<pre><code class="js">
+var reducer = function (state = {todos: []}, action) {
+        var helper = $w.reducerHelper;
+        if (!action || !action.type) {
+            return state;
+        }
+        switch (action.type) {
+
+            case 'COM_TODO.ADD':
+                var todo = {
+                    id       : new Date().getTime(),
+                    text     : action.text
+                };
+                return Object.assign({}, state, {
+                    todos: helper.add(state.todos, todo)
+                });
+
+            default:
+                return state
+        }
+    };
+
+$w.trigger('whisper.addReducer', {name: 'com_todo', reducer: reducer});
+			</code></pre>
+		</section>
+		<section>
+			<h3>View updated</h3>
+			<pre><code>
+var render = function () {
+            $w.trigger('whisper.getState', function (state) {
+
+                var i, li,
+                    todos = state.com_todo.todos;
+
+                // Clear out the list
+                list.innerHTML = '';
+
+                // Loop over the todos and add each item
+                for (i = 0; i < todos.length; i++) {
+                    li = document.createElement('li');
+                    li.setAttribute('data-id', todos[i].id);
+                    li.innerHTML = todos[i].text;
+                    list.appendChild(li);
+                }
+
+                // Reset the input to ''
+                input.value = '';
+            })
+        }
+
+        // Update the page with the state
+        render();
+
+        // Subscribe to state changes
+		// each time the state is changed render() is run
+        $w.trigger('whisper.subscribe', render);
+				</code></pre>
+		</section>
+
+		<section>
+			<h3>Module - observe state changes</h3>
+			<pre><code class="js">
+(function ($w) {
+    $w.ready(function () {
+        //Update the UI based on the current state
+        var render = function () {
+            $w.trigger('whisper.getState', function (state) {
+                var valueEl = document.querySelector('*[data-total-todos]');
+                valueEl.innerHTML = state.com_todo.todos.length.toString();
+            })
+        };
+
+        render(); // Initial render
+        $w.trigger('whisper.subscribe', render) // Subscribe to state changes
+
+    })
+})(Joomla.whisper);
+</code></pre>
+		</section>
+		<section>
+			<h3>Whisper.js</h3>
+			<pre><code>/*jslint esversion: 6 */
+
+// Import the required modules
+import {createStore} from 'redux';
+import {configureStore, injectAsyncReducer} from './store';
+
+// Create a Redux store holding the state of your app.
+let store = configureStore({});
+
+/**
+ * Add a reducer function to the whisper framework
+ * Reducers respond to actions and update the application's state.
+ * @param {event} event
+ */
+const addReducer = (event) => {
+    const d = event.detail;
+    injectAsyncReducer(store, d.name, d.reducer);
+    // Optional function that can be run once the
+	// reducer has been added to Whisper
+    if (d.onAdd !== undefined) {
+        d.onAdd();
+    }
+};
+
+/**
+ * Dispatch an action to the store
+ * Actions are payloads of information that send data from your
+ * application to Whisper's store.
+ * They are the only source of information for the store
+ * @param {event} event
+ */
+const dispatch = (event) => {
+    const d = event.detail;
+    store.dispatch(d.action);
+};
+
+/**
+ * Get the current state
+ * @param {event} event
+ * @returns {S}
+ */
+const getState = (event) => {
+    // d will be the callback function that was passed in the event
+    const d = event.detail;
+    return d(store.getState());
+};
+
+/**
+ * Subscribe a function which is run when the store's state
+ * changes. This function handles updating the view
+ * @param {event} event
+ */
+const subscribe = (event) => {
+    const d = event.detail;
+    store.subscribe(d);
+};
+
+// Watch for any custom events (fired by components/modules etc)
+document.addEventListener('whisper.addReducer', addReducer);
+document.addEventListener('whisper.dispatch', dispatch);
+document.addEventListener('whisper.getState', getState);
+document.addEventListener('whisper.subscribe', subscribe);
+</code></pre>
+		</section>
+		<section>
+			<h3>Gulp build script</h3>
+			<pre><code>var gulp = require('gulp'),
+    browserify = require('browserify'),
+    babelify = require('babelify'),
+    source = require('vinyl-source-stream'),
+    uglify = require('gulp-uglify'),
+    buffer = require('vinyl-buffer');
+
+    gulp.task('watch', function () {
+        gulp.watch('./src/*.js', ['dist']);
+    });
+
+    /**
+     * First runs scripts and then browserifies
+     * them and converts them from es6 to es2015 js code
+     */
+    gulp.task('dist', function () {
+        process.env.NODE_ENV = 'production';
+        browserify(
+            {
+                entries   : './src/app.js',
+                extensions: ['.js'],
+                debug     : true
+            }
+        )
+        .transform(babelify, {presets: ['es2015', 'stage-2']})
+        .bundle()
+        .pipe(source('whisper.js'))
+        .pipe(buffer())
+        .pipe(uglify())
+        .pipe(gulp.dest('./'));
+});
+
+
+gulp.task('default', ['dist'], function () {
+});</code></pre>
+
+		</section>
+		<section>
+			<h3>What would all that actually look like?</h3>
+			<embed src="images/2016-05-18_1555.swf" style="width:100%;height: 100%"></embed>
+		</section>
+		<section data-markdown>
+			<script type="text/template">
+			![](images/much-rejoicing.gif)
+			</script>
+		</section>
+		<section data-markdown>
+			## What next?
+			- Aysnc actions to query database
+			- IndexDb support for hot-loading application state
+			- Use selectors to compute derived data
+			- Core component reducers
+			</section>
+		<section data-markdown>
+			## Summary
+			- Whisper.js - small js library to manage one way data flow
+			- Sample code for component/module communication
+			- Opt-in, and hands off view rendering to component
+			</section>
+		<section data-markdown>
+				## Thanks! Any questions??
+				- https://github.com/Fabrik/whisper
+				- http://facebook.github.io/flux/
+				- https://github.com/reactjs/redux
+				- rob@pollen-8.co.uk
+		</section>
+	</div>
+</div>
+<script src="js/reveal.js"></script>
+<script src="plugin/markdown/marked.js"></script>
+<script src="plugin/markdown/markdown.js"></script>
+<script src="plugin/highlight/highlight.js"></script>
+<script src="lib/js/head.min.js"></script>
+<script>
+	Reveal.initialize({
+		history     : true,
+		dependencies: [
+
+			// Syntax highlight for <code> elements
+			{
+				src: 'plugin/highlight/highlight.js', async: true, callback: function () {
+					hljs.initHighlightingOnLoad();
+				}
+			}
+		]
+	});
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
